@@ -65,6 +65,7 @@ USER root
 
 # ========= Claude Code =========
 ENV PATH="/home/coder/.local/bin:${PATH}"
+ENV NPM_CONFIG_PREFIX="/home/coder/.local"
 RUN mkdir -p /home/coder/.local/bin /home/coder/.claude && \
     chown -R coder:coder /home/coder/.local /home/coder/.claude
 USER coder
@@ -72,17 +73,17 @@ RUN curl -fsSL https://claude.ai/install.sh | bash
 
 # ========= Codex CLI =========
 RUN mkdir -p /home/coder/.codex && \
-    chown -R coder:coder home/coder/.codex
+    chown -R coder:coder /home/coder/.codex
 RUN npm install -g @openai/codex
 
 # ========= Gemini CLI =========
 RUN mkdir -p /home/coder/.gemini && \
-    chown -R coder:coder home/coder/.gemini
+    chown -R coder:coder /home/coder/.gemini
 RUN npm install -g @google/gemini-cli
 
 # ========= GitHub Copilot CLI =========
 RUN mkdir -p /home/coder/.copilot && \
-    chown -R coder:coder home/coder/.copilot
+    chown -R coder:coder /home/coder/.copilot
 RUN curl -fsSL https://gh.io/copilot-install | bash || true
 
 # Set back to coder user
