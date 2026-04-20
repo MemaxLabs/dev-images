@@ -90,11 +90,7 @@ RUN curl -fsSL https://gh.io/copilot-install | bash || true
 RUN install_wrapper() { \
       local name="$1"; \
       local command="$2"; \
-      cat >"/home/coder/.local/bin/${name}" <<EOF
-#!/bin/bash
-set -e
-exec ${command} "\$@"
-EOF
+      printf '%s\n' '#!/bin/bash' 'set -e' "exec ${command} \"\$@\"" >"/home/coder/.local/bin/${name}"; \
       chmod +x "/home/coder/.local/bin/${name}"; \
     }; \
     install_wrapper "claude-auto" "claude --dangerously-skip-permissions"; \
