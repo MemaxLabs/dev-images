@@ -86,5 +86,22 @@ RUN mkdir -p /home/coder/.copilot && \
     chown -R coder:coder /home/coder/.copilot
 RUN curl -fsSL https://gh.io/copilot-install | bash || true
 
+# ========= Agent auto-mode aliases =========
+RUN install_wrapper() { \
+      local name="$1"; \
+      local command="$2"; \
+      cat >"/home/coder/.local/bin/${name}" <<EOF
+#!/bin/bash
+set -e
+exec ${command} "\$@"
+EOF
+      chmod +x "/home/coder/.local/bin/${name}"; \
+    }; \
+    install_wrapper "claude-auto" "claude --dangerously-skip-permissions"; \
+    install_wrapper "codex-auto" "codex --dangerously-bypass-approvals-and-sandbox"; \
+    install_wrapper "gemini-auto" "gemini --yolo"; \
+    install_wrapper "copilot-auto" "copilot --yolo"; \
+    install_wrapper "copilot-full" "copilot --autopilot --yolo"
+
 # Set back to coder user
 USER coder
